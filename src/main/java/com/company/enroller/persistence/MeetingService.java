@@ -23,9 +23,9 @@ public class MeetingService {
     }
 
     public Meeting add(Meeting meeting) {
-        Transaction tr = connector.getSession().beginTransaction();
+        Transaction transaction = connector.getSession().beginTransaction();
         connector.getSession().save(meeting);
-        tr.commit();
+        transaction.commit();
         return meeting;
     }
 
@@ -34,10 +34,17 @@ public class MeetingService {
     }
 
     public Meeting delete(Meeting meeting) {
-        Transaction tr = connector.getSession().beginTransaction();
+        Transaction transaction = connector.getSession().beginTransaction();
         System.out.println(meeting);
         connector.getSession().delete(meeting);
-        tr.commit();
+        transaction.commit();
+        return meeting;
+    }
+
+    public Meeting updateMeeting(Meeting meeting) {
+        Transaction transaction = connector.getSession().beginTransaction();
+        connector.getSession().update(meeting);
+        transaction.commit();
         return meeting;
     }
 

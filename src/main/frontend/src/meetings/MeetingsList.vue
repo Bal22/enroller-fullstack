@@ -10,7 +10,7 @@
     </thead>
     <tbody>
     <tr v-for="meeting in meetings" :key="meeting.name">
-      <td>{{ meeting.name }}</td>
+      <td>{{ meeting.title }}</td>
       <td>{{ meeting.description }}</td>
       <td>
         <ul v-if="meeting.participants">
@@ -25,7 +25,7 @@
                 @click="$emit('attend', meeting)">
           Zapisz się
         </button>
-        <button v-else class="button-outline" @click="$emit('unattend', meeting)">Wypisz się</button>
+        <button v-if="isEnrolled(meeting.participants)" class="button-outline" @click="$emit('unattend', meeting)">Wypisz się</button>
         <button v-if="meeting.participants.length === 0" class="button" @click="$emit('delete', meeting)">
           Usuń puste spotkanie
         </button>
@@ -37,6 +37,15 @@
 
 <script>
     export default {
-        props: ['meetings', 'username']
+            props: ['meetings', 'username'],
+    		data: {lol: ""},
+          methods: {
+              isEnrolled(participants){
+    			  if (participants.length==0) return false;
+    			  let filteredParticipants = participants.filter(part => part.login===this.username);
+    			  return filteredParticipants.length>0;
+              }
+    	 }
+
     }
 </script>

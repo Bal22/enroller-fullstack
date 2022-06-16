@@ -30,8 +30,8 @@
             };
         },
 
-        mounted() {
-            this.$http.get('meetings').then(response => this.meetings = response.body);
+        mounted(){
+            this.fetchMeetings();
         },
 
         methods: {
@@ -45,10 +45,10 @@
                 meeting.participants.splice(meeting.participants.indexOf(this.username), 1);
             },
             deleteMeeting(meeting) {
-                this.$http.delete('meetings/' + meeting.id).then(response => this.fetchMeetings());
+                this.$http.delete('meetings/' + meeting.id).then(() => this.fetchMeetings());
             },
             fetchMeetings() {
-                this.$http.get('meetings').then(response => {this.meetings = response.body;});
+                this.$http.get('meetings').then(response => {this.meetings = response.body; });
             }
         }
     }
