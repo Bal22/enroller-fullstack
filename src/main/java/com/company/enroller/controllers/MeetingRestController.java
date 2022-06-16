@@ -6,9 +6,7 @@ import com.company.enroller.persistence.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -27,5 +25,21 @@ public class MeetingRestController {
 
         Collection<Meeting> meetings = meetingService.getAll();
         return new ResponseEntity<Collection<Meeting>>(meetings, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<?> addMeeting(@RequestBody Meeting meeting) {
+        meetingService.add(meeting);
+        return new ResponseEntity<Meeting>(meeting, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+        public ResponseEntity<?> delMeeting(@PathVariable("id") long meetingId) {
+            Meeting meeting = meetingService.findById(meetingId);
+            if (meeting == null) {
+                return new ResponseEntity("Meeting with id: " + meetingId + " does not exist", HttpStatus.NOT_FOUND);
+            }
+            meeting = meetingService.delete(meeting);
+            return new ResponseEntity<Meeting>(meeting, HttpStatus.OK);
     }
 }
